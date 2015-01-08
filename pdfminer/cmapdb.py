@@ -235,12 +235,15 @@ class CMapDB(object):
                       os.path.join(os.path.dirname(__file__), 'cmap'),)
         for directory in cmap_paths:
             path = os.path.join(directory, filename)
-            if os.path.exists(path):
-                gzfile = gzip.open(path)
-                try:
-                    return type(str(name), (), pickle.loads(gzfile.read()))
-                finally:
-                    gzfile.close()
+            try:
+                if os.path.exists(path):
+                    gzfile = gzip.open(path)
+                    try:
+                        return type(str(name), (), pickle.loads(gzfile.read()))
+                    finally:
+                        gzfile.close()
+            except:
+                pass
         else:
             raise CMapDB.CMapNotFound(name)
 
